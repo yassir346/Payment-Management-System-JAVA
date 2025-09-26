@@ -16,6 +16,8 @@ public class Agent extends Personne{
         this.paiements = paiements;
     }
 
+    public Agent(){}
+
     public int getIdAgent() {
         return idAgent;
     }

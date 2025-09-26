@@ -10,6 +10,6 @@ public interface IAgentDao {
     void delete(Agent agent) throws SQLException;
     List<Agent> getAll() throws SQLException;
     void update(Agent agent) throws SQLException;
-    Agent findById() throws SQLException;
-    Agent findByEmailAndPassword() throws SQLException;
+    Agent findById(int id) throws SQLException;
+    Agent findByEmailAndPassword(String email, String password) throws SQLException;
 }

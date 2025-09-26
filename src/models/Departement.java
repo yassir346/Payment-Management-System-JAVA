@@ -8,11 +8,13 @@ public class Departement {
     private Agent responsable;
     private ArrayList<Agent> agents;
 
-    public Departement(int idDepartement, String nom, Agent responsable, ArrayList<Agent> agents) {
+    public Departement(int idDepartement, String nom) {
         this.idDepartement = idDepartement;
         this.nom = nom;
-        this.responsable = responsable;
-        this.agents = agents;
+    }
+
+    public Departement(){
+
     }
 
     public int getIdDepartement() {
