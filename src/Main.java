@@ -4,6 +4,7 @@ import config.DB;
 import models.Agent;
 import models.Departement;
 import models.TypeAgent;
+import service.Ipml.AgentServiceIpml;
 
 import java.sql.SQLException;
 
@@ -22,37 +23,21 @@ public class Main {
         Departement dpt = new Departement(1, "RH");
 
         AgentDaoImpl test = new AgentDaoImpl();
+        AgentServiceIpml  agentService = new AgentServiceIpml();
         DepartementDaoImpl saveDptTest = new DepartementDaoImpl();
 
-        Agent agt1 = new Agent("nom", "prenom", "email", "password", 1, TypeAgent.OUVRIER, dpt, null);
-        Agent agt2 = new Agent("ahmed", "foulan", "email2", "password3", 1, TypeAgent.STAGIAIRE, dpt, null);
+        Agent agt4 = new Agent("new", "new", "new", "new", 13, TypeAgent.STAGIAIRE, dpt, null);
+//        Agent agt2 = new Agent("ahmed", "foulan", "email2", "password3", 1, TypeAgent.STAGIAIRE, dpt, null);
+//        Agent agt3 = new Agent("kamal", "foul", "email3", "password4", 1, TypeAgent.RESPONSABLE_DEPARTEMENT, dpt, null);
+        Agent agt1 = agentService.findById(13);
+        System.out.println(agt1);
 
-        dpt.setResponsable(agt2);
+//        dpt.setResponsable(agt2);
 
-//        test.save(agt2);
-//
-//        try{
-//            test.save(agt2);
-//            System.out.println("row has been inserted");
-//
-//        }catch (Exception e){
-//            e.getMessage();
-//            System.out.println("hsbdcuhbszu");
-//        }
-
-        test.delete(agt1);
-
-//        saveDptTest.saveDepartement(dpt);
-
-
-
-
-
-
+//        agentService.supprimer(agt1);
+        agt1 = agt4;
+        agentService.modifier(agt1);
 
     }
-
-
-
 
 }

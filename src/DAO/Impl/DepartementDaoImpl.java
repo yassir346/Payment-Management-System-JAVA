@@ -101,12 +101,12 @@ public class DepartementDaoImpl implements IDepartementDao {
     }
 
     @Override
-    public void assignerResponsable(Departement departement, Agent responsable) throws SQLException {
+    public int assignerResponsable(Departement departement, Agent responsable) throws SQLException {
         String sql = "update agents set department_id = ? where id = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, departement.getIdDepartement());
         preparedStatement.setInt(2, responsable.getIdAgent());
-        preparedStatement.executeUpdate();
+        return preparedStatement.executeUpdate();
     }
 }
 

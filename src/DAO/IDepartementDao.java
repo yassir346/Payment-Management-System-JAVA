@@ -13,8 +13,6 @@ public interface IDepartementDao{
     public List<Departement> getAll() throws SQLException;
     public Departement findByID(int id) throws SQLException;
     public Departement findByName(String nomDepartement) throws SQLException;
-    public void assignerResponsable(Departement departement, Agent agent) throws SQLException;
-
-
+    public int assignerResponsable(Departement departement, Agent agent) throws SQLException;
 
 }

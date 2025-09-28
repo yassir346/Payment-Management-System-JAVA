@@ -55,7 +55,6 @@ public class Agent extends Personne{
         return "Agent{" +
                 "idAgent=" + idAgent +
                 ", typeAgent=" + typeAgent +
-                ", departement=" + departement +
                 ", paiements=" + paiements +
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +

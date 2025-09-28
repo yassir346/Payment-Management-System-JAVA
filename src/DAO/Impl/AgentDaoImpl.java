@@ -39,12 +39,12 @@ public class AgentDaoImpl implements IAgentDao{
     }
 
     @Override
-    public void delete(Agent agent) throws SQLException {
+    public int delete(Agent agent) throws SQLException {
         String sql = "DELETE FROM agents WHERE idagent = ?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, agent.getIdAgent());
-        preparedStatement.executeUpdate();
+        return preparedStatement.executeUpdate();
     }
 //
     @Override
@@ -70,21 +70,20 @@ public class AgentDaoImpl implements IAgentDao{
     }
 //
     @Override
-    public void update(Agent agent) throws SQLException {
-        String sql = "UPDATE agents SET nom=?, prenom=?, email=?, password WHERE idagent = ?";
+    public int update(Agent agent) throws SQLException {
+        String sql = "UPDATE agents SET nom=?, prenom=?, email=?, password = ? WHERE idagent = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, agent.getNom());
         preparedStatement.setString(2, agent.getPrenom());
         preparedStatement.setString(3, agent.getEmail());
         preparedStatement.setString(4, agent.getMotDePasse());
         preparedStatement.setInt(5, agent.getIdAgent());
-        preparedStatement.executeUpdate();
-
+        return preparedStatement.executeUpdate();
     }
 //
     @Override
     public Agent findById(int id) throws SQLException {
-        String sql = "SELECT * agents WHERE id = ?";
+        String sql = "SELECT * FROM agents WHERE idagent = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -109,11 +108,10 @@ public class AgentDaoImpl implements IAgentDao{
     }
 //
     @Override
-    public Agent findByEmailAndPassword(String email, String password) throws SQLException {
-        String sql = "SELECT * FROM agents WHERE email = ? AND password = ?";
+    public Agent findByEmail(String email) throws SQLException {
+        String sql = "SELECT * FROM agents WHERE email = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, email);
-        preparedStatement.setString(2, password);
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
