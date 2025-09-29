@@ -2,13 +2,14 @@ package DAO.Impl;
 
 import DAO.IAgentDao;
 import config.DB;
-import config.DatabaseConfig;
 import models.Agent;
 import models.TypeAgent;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AgentDaoImpl implements IAgentDao{
     static Connection connection;
@@ -126,5 +127,31 @@ public class AgentDaoImpl implements IAgentDao{
             agent.setTypeAgent(TypeAgent.valueOf(resultSet.getString("typeagent")));
         }
         return agent;
+    }
+
+    @Override
+    public Map<String, Object> findByEmailAndPassword(String email, String password) throws SQLException{
+        String sql = "SELECT * FROM agents WHERE email = ? AND pssword = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, email);
+        preparedStatement.setString(2, password);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        Agent agent = new Agent();
+        int departementId = 0;
+        while(resultSet.next()){
+            agent.setNom(resultSet.getString("nom"));
+            agent.setPrenom(resultSet.getString("prenom"));
+            agent.setEmail(resultSet.getString("email"));
+            agent.setMotDePasse(resultSet.getString("password"));
+            agent.setTypeAgent(TypeAgent.valueOf(resultSet.getString("typeagent")));
+            departementId = resultSet.getInt("departement_id");
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("agent", agent);
+        map.put("departementId", departementId);
+
+        return map;
     }
 }

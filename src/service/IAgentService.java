@@ -10,7 +10,6 @@ public interface IAgentService {
     void modifier(Agent agent);
     Agent findById(int id) throws SQLException;
     Agent findByEmail(String email);
-
     void calculerPaiementAgent(Agent agent);
 
 }

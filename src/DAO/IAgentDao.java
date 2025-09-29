@@ -4,6 +4,7 @@ import models.Agent;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface IAgentDao {
     int save(Agent agent) throws SQLException;
@@ -12,4 +13,5 @@ public interface IAgentDao {
     int update(Agent agent) throws SQLException;
     Agent findById(int id) throws SQLException;
     Agent findByEmail(String email) throws SQLException;
+    Map<String, Object> findByEmailAndPassword(String email, String password) throws SQLException;
 }
