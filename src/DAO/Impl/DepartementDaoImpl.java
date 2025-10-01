@@ -68,13 +68,13 @@ public class DepartementDaoImpl implements IDepartementDao {
 
     @Override
     public Departement findByID(int id) throws SQLException {
-        String sql = "select * from departements where id = ?";
+        String sql = "select * from departements where iddepartement = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
         Departement department = new Departement();
         while (resultSet.next()) {
-            department.setIdDepartement(resultSet.getInt("id"));
+            department.setIdDepartement(resultSet.getInt("iddepartement"));
             department.setNom(resultSet.getString("nom"));
         }
         return department;

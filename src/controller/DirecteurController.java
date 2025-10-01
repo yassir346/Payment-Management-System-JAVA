@@ -70,7 +70,8 @@ public class DirecteurController {
                 case 3:
                     break;
 
-                case 4:
+                case 0:
+                    System.out.println("System Out");
                     break;
 
                 default:
@@ -122,5 +123,6 @@ public class DirecteurController {
             System.out.println("Departement n'est pas ajouté.");
         }
     }
+
 
 }

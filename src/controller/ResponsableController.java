@@ -1,38 +1,43 @@
 package controller;
 
 import DAO.IAgentDao;
-import models.Agent;
-import models.Departement;
-import models.TypeAgent;
+import models.*;
 import service.IAgentService;
 import service.IDepartementService;
+import service.IPaiementService;
 import service.Ipml.AgentServiceIpml;
 import service.Ipml.DepartementServiceIplm;
+import service.Ipml.PaiementServiceImpl;
 
 import java.sql.SQLException;
+import java.sql.SQLOutput;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ResponsableController {
     private Scanner scanner;
     private IAgentService agentService;
     private IDepartementService departementService;
+    private IPaiementService paiementService;
 
     public ResponsableController(){
         this.agentService = new AgentServiceIpml();
         this.departementService = new DepartementServiceIplm();
+        this.paiementService = new PaiementServiceImpl();
         this.scanner = new Scanner(System.in);
     }
 
     public void logoDemarrage(){
         System.out.println("+++++++++++++++++++++");
-        System.out.println("BIENVUNUE A PAYFLOW");
+        System.out.println("BIENVUNUE A PAYFLOW (responsable)");
         System.out.println("+++++++++++++++++++++");
     }
 
     public void menu(){
         System.out.println("Entrez un choix :");
         System.out.println("(1) Ajouter agent.");
-        System.out.println("(1) Modifier agent.");
+        System.out.println("(2) Modifier agent.");
+        System.out.println("(3) Affecter Paiement à un agent.");
     }
 
     public void commander(){
@@ -62,6 +67,11 @@ public class ResponsableController {
                     break;
 
                 case 3:
+                    try{
+                        affecterPaiement();
+                    }catch(SQLException e){
+                        e.printStackTrace();
+                    }
                     break;
 
                 case 4:
@@ -161,8 +171,55 @@ public class ResponsableController {
         this.agentService.modifier(agent);
     }
 
+    public void affecterPaiement() throws SQLException {
+        Paiement paiement = new Paiement();
 
+        System.out.println("Entrez l'email de l'agent ");
+        String email = scanner.next();
+        Agent agent = agentService.findByEmail(email);
 
+        if(agent != null){
+            System.out.println("Agent trouvé. Entrez le paiement que vous voulez affectez à lui.");
+        }else{
+            System.out.println("agent n'est pas trouvé. Veuillez entrer un agent valide");
+        }
 
+        int choixTypeAgent;
 
+            System.out.println("Entrez le type de Paiement. ");
+            System.out.println("(1). SALAIRE. ");
+            System.out.println("(2). PRIME.");
+            System.out.println("(3). BONUS.");
+            System.out.println("(4). INDEMNITE.");
+
+            choixTypeAgent = scanner.nextInt();
+            switch(choixTypeAgent){
+                case 1:
+                    paiement.setTypePaiement(TypePaiement.SALAIRE);
+                    break;
+                case 2:
+                    paiement.setTypePaiement(TypePaiement.PRIME);
+                    break;
+                case 3:
+                    paiement.setTypePaiement(TypePaiement.BONUS);
+                    break;
+                case 4:
+                    paiement.setTypePaiement(TypePaiement.INDEMNITE);
+                    break;
+                default:
+                    System.out.println("Entrez un nombre qui correspond à la liste des types des paiements");
+                    break;
+            }
+
+        System.out.println("Entrez le montant de paiement");
+        double montant = scanner.nextDouble();
+        paiement.setMontant(montant);
+        paiement.setDate(LocalDate.now());
+        paiement.setConditionValid(true);
+        paiement.setAgentId(agent.getIdAgent());
+
+        paiementService.creerPaiement(paiement, agent);
+
+        System.out.println("paiement créé");
+    }
 }

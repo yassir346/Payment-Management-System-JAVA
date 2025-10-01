@@ -65,7 +65,7 @@ public class AuthController {
 
             if (choix.equals("1")) {
                 agent = entreeAgent();
-                if (agent.getTypeAgent() != null) {
+                if (agent != null) {
                     return agent;
                 }
                 System.out.println("Utilisateur introuvable.");

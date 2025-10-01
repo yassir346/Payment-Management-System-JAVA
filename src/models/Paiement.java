@@ -1,23 +1,30 @@
 package models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Paiement {
     private int idPaiement;
     private TypePaiement typePaiement;
     private double montant;
-    private LocalDateTime date;
+    private LocalDate date;
     private String motif;
+    private boolean conditionValid;
     private Agent agent;
+    private int agentId;
 
-    public Paiement(int idPaiement, TypePaiement typePaiement, double montant, LocalDateTime date, String motif, Agent agent) {
+
+    public Paiement(int idPaiement, TypePaiement typePaiement, double montant, LocalDate date, String motif, boolean conditionValid, Agent agent) {
         this.idPaiement = idPaiement;
         this.typePaiement = typePaiement;
         this.montant = montant;
         this.date = date;
         this.motif = motif;
         this.agent = agent;
+        this.conditionValid = conditionValid;
     }
+
+    public Paiement(){    }
 
     public int getIdPaiement() {
         return idPaiement;
@@ -43,11 +50,11 @@ public class Paiement {
         this.montant = montant;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -59,12 +66,29 @@ public class Paiement {
         this.motif = motif;
     }
 
+    public boolean isConditionValid() {
+        return conditionValid;
+    }
+
+    public void setConditionValid(boolean conditionValid) {
+        this.conditionValid = conditionValid;
+    }
+
     public Agent getAgent() {
         return agent;
     }
 
+
     public void setAgent(Agent agent) {
         this.agent = agent;
+    }
+
+    public int getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(int agentId) {
+        this.agentId = agentId;
     }
 
     @Override

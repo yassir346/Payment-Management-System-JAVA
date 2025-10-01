@@ -18,7 +18,7 @@ public class AgentDaoImpl implements IAgentDao{
         try {
             connection = DB.connect();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -131,7 +131,7 @@ public class AgentDaoImpl implements IAgentDao{
 
     @Override
     public Map<String, Object> findByEmailAndPassword(String email, String password) throws SQLException{
-        String sql = "SELECT * FROM agents WHERE email = ? AND pssword = ?";
+        String sql = "SELECT * FROM agents WHERE email = ? AND password = ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, email);
         preparedStatement.setString(2, password);
@@ -140,6 +140,7 @@ public class AgentDaoImpl implements IAgentDao{
         Agent agent = new Agent();
         int departementId = 0;
         while(resultSet.next()){
+            agent.setIdAgent(resultSet.getInt("idagent"));
             agent.setNom(resultSet.getString("nom"));
             agent.setPrenom(resultSet.getString("prenom"));
             agent.setEmail(resultSet.getString("email"));
