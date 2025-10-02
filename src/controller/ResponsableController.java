@@ -12,6 +12,8 @@ import service.Ipml.PaiementServiceImpl;
 import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ResponsableController {
@@ -35,9 +37,12 @@ public class ResponsableController {
 
     public void menu(){
         System.out.println("Entrez un choix :");
-        System.out.println("(1) Ajouter agent.");
-        System.out.println("(2) Modifier agent.");
-        System.out.println("(3) Affecter Paiement à un agent.");
+        System.out.println("(1) Affecter Paiement à un agent.");
+        System.out.println("(2) Afficher les paiements d'un agent.");
+        System.out.println("(3) Afficher tous les paiements.");
+        System.out.println("(4) Ajouter agent.");
+        System.out.println("(5) Modifier agent.");
+        System.out.println("(6) Supprimer agent.");
     }
 
     public void commander(){
@@ -50,6 +55,38 @@ public class ResponsableController {
 
             switch (choix){
                 case 1:
+                    try{
+                        affecterPaiement();
+                    }catch(SQLException e){
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case 2:
+                    try {
+                        paiementsDunAgent();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+
+                case 3:
+                    try {
+                        afficherTousPaiements();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+
+                case 4:
+                    try{
+                        modifierAgent();
+                    }catch(SQLException e){
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case 5:
                     Agent agent = new Agent();
                     try{
                         ajouterAgent(agent);
@@ -58,24 +95,10 @@ public class ResponsableController {
                     }
                     break;
 
-                case 2:
-                    try{
-                        modifierAgent();
-                    }catch(SQLException e){
-                        e.printStackTrace();
-                    }
+                case 6:
+                    supprimerAgent();
                     break;
 
-                case 3:
-                    try{
-                        affecterPaiement();
-                    }catch(SQLException e){
-                        e.printStackTrace();
-                    }
-                    break;
-
-                case 4:
-                    break;
 
                 default:
                     System.out.println("Choix invalid, Entrez un choix depuis le panneau.");
@@ -171,6 +194,14 @@ public class ResponsableController {
         this.agentService.modifier(agent);
     }
 
+    public void supprimerAgent(){
+        System.out.println("Entrez l'email de l'agent à supprimer: ");
+        String email = scanner.next();
+        Agent agent = agentService.findByEmail(email);
+        this.agentService.supprimer(agent);
+        System.out.println("Agent est supprimé.");
+    }
+
     public void affecterPaiement() throws SQLException {
         Paiement paiement = new Paiement();
 
@@ -221,5 +252,27 @@ public class ResponsableController {
         paiementService.creerPaiement(paiement, agent);
 
         System.out.println("paiement créé");
+    }
+
+    public void paiementsDunAgent() throws SQLException {
+        System.out.println("Entrez l'email de l'agent ");
+        String email = scanner.next();
+        Agent agent = agentService.findByEmail(email);
+
+        List<Paiement> paiements;
+        paiements = paiementService.getByAgentId(agent);
+
+
+        for(Paiement p : paiements){
+            System.out.println(p);
+        }
+    }
+
+    public void afficherTousPaiements() throws SQLException {
+        List<Paiement> paiements;
+        paiements = paiementService.paiements();
+        for(Paiement p : paiements){
+            System.out.println(p);
+        }
     }
 }

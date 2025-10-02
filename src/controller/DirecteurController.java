@@ -1,15 +1,18 @@
 package controller;
 
-import models.Agent;
-import models.Departement;
-import models.TypeAgent;
+import models.*;
 import service.IAgentService;
 import service.IDepartementService;
+import service.IPaiementService;
 import service.Ipml.AgentServiceIpml;
 import service.Ipml.DepartementServiceIplm;
+import service.Ipml.PaiementServiceImpl;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class DirecteurController {
     private Scanner scanner;
@@ -31,8 +34,13 @@ public class DirecteurController {
         System.out.println("(1) Ajouter responsable.");
         System.out.println("(2) Ajouter departement.");
         System.out.println("(3) Liste des paiements.");
-        System.out.println("(4) Calculer paiements");
+        System.out.println("(4) Afficher Statistiques.");
         System.out.println("(0) Sortir");
+    }
+
+    public void menuStatistique(){
+        System.out.println("Entrez un choix :");
+        System.out.println("(1) Afficher les salaire totales annuelles.");
     }
 
 
@@ -67,8 +75,26 @@ public class DirecteurController {
                     }
                     break;
 
-                case 3:
-                    break;
+                case 4:
+                    menuStatistique();
+                    int choix2 = scanner.nextInt();
+                    switch(choix2){
+                        case 1:
+                            try {
+                                totalPaiementAnnuel();
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        break;
+
+                        case 2:
+                            try {
+                                nombrePBI();
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            break;
+                    }
 
                 case 0:
                     System.out.println("System Out");
@@ -122,6 +148,34 @@ public class DirecteurController {
         }else{
             System.out.println("Departement n'est pas ajouté.");
         }
+    }
+
+    public void totalPaiementAnnuel() throws SQLException {
+        IPaiementService paiementService = new PaiementServiceImpl();
+        List<Paiement> paiements = paiementService.paiements();
+
+        System.out.println("Entrez l'année que vous voulez consulter.");
+        int annee = scanner.nextInt();
+        double totalAnnuelle = paiements.stream()
+                .filter(paiement ->  paiement.getDate().isAfter(LocalDate.of(annee, 01, 01)) && paiement.getDate().isBefore(LocalDate.of(annee, 12, 31)))
+                .map(paiement -> paiement.getMontant())
+                .mapToDouble(Double::doubleValue)
+                .sum();
+
+        System.out.println(totalAnnuelle);
+    }
+
+    public void nombrePBI() throws SQLException {
+        IPaiementService paiementService = new PaiementServiceImpl();
+        List<Paiement> paiements = paiementService.paiements();
+        Scanner scanner1 = new Scanner(System.in);
+        TypePaiement typePay = TypePaiement.valueOf(scanner1.nextLine());
+
+        long countByType = paiements.stream()
+                .filter(paiement -> paiement.getTypePaiement().equals(typePay))
+                .count();
+
+        System.out.println("Nombre de " + typePay + " affecté(e)s " + " est " + countByType);
     }
 
 

@@ -92,11 +92,11 @@ public class PaiementDaoImpl implements IPaiementDao {
         preparedStatement.setInt(1, agent.getIdAgent());
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        List<Paiement> paiements = null;
+        List<Paiement> paiements = new ArrayList<>();
         while(resultSet.next()){
             Paiement paiement = new Paiement();
             paiement.setIdPaiement(resultSet.getInt("id"));
-            paiement.setTypePaiement(TypePaiement.valueOf(resultSet.getString("typepaiment")));
+            paiement.setTypePaiement(TypePaiement.valueOf(resultSet.getString("typepayment")));
             paiement.setMontant(resultSet.getDouble("amount"));
             paiement.setDate(resultSet.getDate("date").toLocalDate());
             paiement.setMotif(resultSet.getString("motif"));
@@ -117,7 +117,7 @@ public class PaiementDaoImpl implements IPaiementDao {
         while(resultSet.next()){
             Paiement paiement = new Paiement();
             paiement.setIdPaiement(resultSet.getInt("id"));
-            paiement.setTypePaiement(TypePaiement.valueOf(resultSet.getString("typepaiment")));
+            paiement.setTypePaiement(TypePaiement.valueOf(resultSet.getString("typepayment")));
             paiement.setMontant(resultSet.getDouble("amount"));
             paiement.setDate(resultSet.getDate("date").toLocalDate());
             paiement.setMotif(resultSet.getString("motif"));
@@ -139,7 +139,7 @@ public class PaiementDaoImpl implements IPaiementDao {
         while(resultSet.next()){
             Paiement paiement = new Paiement();
             paiement.setIdPaiement(resultSet.getInt("id"));
-            paiement.setTypePaiement(TypePaiement.valueOf(resultSet.getString("typepaiment")));
+            paiement.setTypePaiement(TypePaiement.valueOf(resultSet.getString("typepayment")));
             paiement.setMontant(resultSet.getDouble("amount"));
             paiement.setDate(resultSet.getDate("date").toLocalDate());
             paiement.setMotif(resultSet.getString("motif"));
@@ -161,7 +161,7 @@ public class PaiementDaoImpl implements IPaiementDao {
         while(resultSet.next()){
             Paiement paiement = new Paiement();
             paiement.setIdPaiement(resultSet.getInt("id"));
-            paiement.setTypePaiement(TypePaiement.valueOf(resultSet.getString("typepaiment")));
+            paiement.setTypePaiement(TypePaiement.valueOf(resultSet.getString("typepayment")));
             paiement.setMontant(resultSet.getDouble("amount"));
             paiement.setDate(resultSet.getDate("date").toLocalDate());
             paiement.setMotif(resultSet.getString("motif"));
